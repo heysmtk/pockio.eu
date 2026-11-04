@@ -1,0 +1,94 @@
+/* Barvy z design systému Pockio (tokens.json) */
+:root {
+  --surface-100: #ffffff;
+  --surface-200: #f4f4fb;
+  --ink: #1f2937;
+  --ink-muted: #5b6475;
+  --brand: #4f46e5;
+  --brand-tint: #e0e7ff;
+  --line: #e3e5ee;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-100: #0f1220;
+    --surface-200: #181c2e;
+    --ink: #f3f4f6;
+    --ink-muted: #a3a9ba;
+    --brand: #818cf8;
+    --brand-tint: #272b4d;
+    --line: #2a2f45;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+html, body { height: 100%; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-100);
+  color: var(--ink);
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.logo img {
+  display: block;
+  width: min(336px, 80vw);
+  height: auto;
+}
+
+.badge {
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: var(--brand-tint);
+  color: var(--brand);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 56px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  max-width: 14ch;
+}
+
+footer {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+/* Jemný nájezd při načtení */
+@media (prefers-reduced-motion: no-preference) {
+  .hero > * {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rise 0.6s ease forwards;
+  }
+  .hero > :nth-child(2) { animation-delay: 0.12s; }
+  .hero > :nth-child(3) { animation-delay: 0.24s; }
+
+  @keyframes rise {
+    to { opacity: 1; transform: none; }
+  }
+}
