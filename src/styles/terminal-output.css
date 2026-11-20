@@ -96,6 +96,7 @@
 .select .label { margin: 0 0 8px; color: var(--mut); }
 .cmds { list-style: none; margin: 0; padding: 0; gap: 0; }
 .cmds li { padding: 0; }
+.cmds li::before { content: none; } /* bez okrové pomlčky ze seznamů ve výpisu */
 .select a.cmd {
   display: flex;
   flex-wrap: wrap;
@@ -110,8 +111,8 @@
 .select a.cmd:hover { color: var(--fg); }
 .cmd .mark { visibility: hidden; width: 1.3ch; margin-right: -18px; color: var(--acc-text); }
 .cmd .n { width: 132px; font-weight: 500; }
-.cmd .d { color: var(--mut); }
-.cmd .ico { width: 20px; height: 20px; margin-right: 10px; border-radius: 5px; vertical-align: -5px; }
+.cmd .d { display: inline-flex; align-items: center; gap: 10px; color: var(--mut); }
+.cmd .ico { flex: none; width: 20px; height: 20px; border-radius: 5px; }
 .cmd.is-selected { background: var(--tint); }
 .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
 /* bez JS se výběr neřídí skriptem, tak ho nahradí hover; s JS hover posouvá výběr (terminal.ts) */

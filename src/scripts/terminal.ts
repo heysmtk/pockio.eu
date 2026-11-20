@@ -141,7 +141,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
         description: c.description,
         ...(c.type === 'link' ? { href: c.href } : { run: true }),
       })),
-      ...apps.map((a) => ({ name: a.slug, names: [a.slug], description: `${a.title} · ${a.description}`, href: a.href, icon: a.icon })),
+      ...apps.map((a) => ({ name: a.slug, names: [a.slug], description: a.title, href: a.href, icon: a.icon })),
     ];
     const hits = all.filter((f) => {
       if (seen.has(f.name)) return false;
