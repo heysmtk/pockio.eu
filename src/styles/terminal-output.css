@@ -5,7 +5,7 @@
   gap: 14px;
   max-width: 72ch;
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: 13.5px;
   line-height: 1.7;
   font-weight: 400;
   color: var(--fg);
@@ -14,13 +14,13 @@
 .out h1,
 .out h2 {
   margin: 0;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.35;
   font-weight: 800;
 }
 .out h3 {
   margin: 6px 0 0;
-  font-size: 16.5px;
+  font-size: 15px;
   line-height: 1.35;
   font-weight: 800;
 }
@@ -58,6 +58,9 @@
 .out .kv dt { color: var(--mut); }
 .out .kv dd { margin: 0; }
 @media (max-width: 640px) {
+  .out { font-size: 15px; }
+  .out h1, .out h2 { font-size: 19px; }
+  .out h3 { font-size: 16.5px; }
   .out .kv { grid-template-columns: 1fr; gap: 0; }
   .out .kv dd { margin-bottom: 6px; }
 }

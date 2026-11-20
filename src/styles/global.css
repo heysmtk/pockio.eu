@@ -43,7 +43,7 @@ body::before {
     radial-gradient(1px 1px at 55% 92%, rgba(241, 236, 223, 0.25), transparent);
 }
 
-/* hlavní kontejner 960 px (okno terminálu, patička, privacy hlavička) */
+/* hlavní kontejner 760 px (okno terminálu a patička) */
 .container {
   width: min(var(--container), 100% - 2 * var(--gutter));
   margin-inline: auto;

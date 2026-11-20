@@ -31,7 +31,7 @@
   --r-pill: 9999px;
 
   /* rozměry */
-  --container: 960px;
+  --container: 760px;
   --gutter: 16px; /* okraj okna na úzkém displeji */
   --inset: 24px; /* vnitřní okraj patičky a privacy hlavičky */
 }

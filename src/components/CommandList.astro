@@ -1,11 +1,9 @@
 ---
 // Seznam příkazů (Domů, /apps). Každý řádek je obyčejný odkaz.
-// `run` = příkaz vypíše výsledek v terminálu (skript), bez JS je to obyčejný odkaz na `href`.
 export interface Item {
   name: string;
   description: string;
   href: string;
-  run?: boolean;
 }
 interface Props {
   items: Item[];
@@ -23,8 +21,7 @@ const { items, label, footer } = Astro.props;
         <a
           class={`cmd${i === 0 ? ' is-selected' : ''}`}
           href={item.href}
-          data-term={item.run ? undefined : ''}
-          data-run={item.run ? item.name : undefined}
+          data-term
           data-cmd={item.name}
         >
           <span class="mark" aria-hidden="true">▸</span>

@@ -9,7 +9,7 @@ Screenshoty schváleného návrhu (plátno „Pockio.eu – website"), vždy EN 
 | `03-o-studiu-*` | O studiu jako výpis `/about` |
 | `04-detail-appky-*` | Detail appky jako výpis `/attendance` (zpět `← /apps`) |
 | `05-kontakt-*` | Kontakt jako výpis `/contact` |
-| `06-privacy-*` | Privacy: samostatná textová stránka bez terminálu (`/privacy` na ni jen odkazuje) |
+| `06-privacy-*` | Privacy: starší návrh jako samostatná stránka; teď se privacy vypisuje v terminálu (jako ostatní stránky) |
 | `terminal-demo-vypisovani.html` | Klikací ukázka vypisování po slovech (starší, appky ještě přímo na Domů; chování výpisu platí). |
 
 Poznámky:

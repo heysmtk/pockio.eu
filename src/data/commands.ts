@@ -20,15 +20,7 @@ export type Command = {
   home?: boolean;
 } & (
   | { type: 'link'; href: string }
-  | {
-      type: 'output';
-      title: string;
-      lines: string[];
-      /** odkaz pod výpisem (např. na plnou stránku) */
-      more?: { label: string; href: string };
-      /** adresa, kam vede řádek v seznamu bez JS */
-      href?: string;
-    }
+  | { type: 'output'; title: string; lines: string[] }
 );
 
 // DOČASNĚ: ve fázi 3 nahradí content collection `apps`.
@@ -55,20 +47,7 @@ const commands: Record<Lang, Command[]> = {
   en: [
     { name: 'apps', type: 'link', href: routes.apps.en, description: 'our pocket-sized apps', home: true },
     { name: 'about', type: 'link', href: routes.about.en, description: 'about the studio', home: true },
-    {
-      name: 'privacy',
-      type: 'output',
-      title: 'Privacy policy',
-      // Zástupné shrnutí; před spuštěním zkontrolovat.
-      lines: [
-        'This website uses no cookies and no trackers.',
-        'The apps keep your data on your phone.',
-      ],
-      more: { label: 'Read the full privacy policy →', href: routes.privacy.en },
-      href: routes.privacy.en,
-      description: 'privacy policy',
-      home: true,
-    },
+    { name: 'privacy', type: 'link', href: routes.privacy.en, description: 'privacy policy', home: true },
     { name: 'contact', type: 'link', href: routes.contact.en, description: 'get in touch', home: true },
     { name: 'home', type: 'link', href: routes.home.en, description: 'back to the start' },
     {
@@ -83,20 +62,7 @@ const commands: Record<Lang, Command[]> = {
   cs: [
     { name: 'appky', aliases: ['apps'], type: 'link', href: routes.apps.cs, description: 'naše kapesní appky', home: true },
     { name: 'o-studiu', aliases: ['about'], type: 'link', href: routes.about.cs, description: 'o studiu', home: true },
-    {
-      name: 'soukromi',
-      aliases: ['privacy'],
-      type: 'output',
-      title: 'Zásady ochrany soukromí',
-      lines: [
-        'Tento web nepoužívá cookies ani trackery.',
-        'Appky drží tvoje data v telefonu.',
-      ],
-      more: { label: 'Přečíst celé zásady ochrany soukromí →', href: routes.privacy.cs },
-      href: routes.privacy.cs,
-      description: 'zásady ochrany soukromí',
-      home: true,
-    },
+    { name: 'soukromi', aliases: ['privacy'], type: 'link', href: routes.privacy.cs, description: 'zásady ochrany soukromí', home: true },
     { name: 'kontakt', aliases: ['contact'], type: 'link', href: routes.contact.cs, description: 'napiš mi', home: true },
     { name: 'home', type: 'link', href: routes.home.cs, description: 'zpět na začátek' },
     {
