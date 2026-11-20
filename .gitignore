@@ -1,0 +1,18 @@
+# build
+node_modules/
+dist/
+.astro/
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# logs, OS
+*.log
+npm-debug.log*
+.DS_Store
+
+# local-only docs (nepatří do veřejného repa)
+CLAUDE.md
+pockio-mvp-plan.md
