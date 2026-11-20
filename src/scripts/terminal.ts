@@ -30,6 +30,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = window.matchMedia('(pointer: coarse)');
   if (prompt) prompt.hidden = false;
+  document.documentElement.classList.add('js');
 
   const { apps, commands } = data.commands;
 
@@ -309,6 +310,12 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     void navigate(a.href);
   });
   document.addEventListener('mousedown', finish);
+
+  // hover posouvá výběr, aby byl zvýrazněný vždy jen jeden řádek
+  document.addEventListener('mouseover', (e) => {
+    const row = (e.target as Element).closest<HTMLAnchorElement>('[data-cmd-list] a.cmd');
+    if (row && !row.classList.contains('is-selected')) select(row);
+  });
 
   window.addEventListener('popstate', (e) => {
     const state = e.state as { out?: string } | null;

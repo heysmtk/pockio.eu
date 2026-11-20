@@ -52,8 +52,11 @@ const { items, label, footer } = Astro.props;
   .mark { visibility: hidden; width: 1.3ch; margin-right: -18px; color: var(--acc-text); }
   .n { width: 132px; font-weight: 500; }
   .d { color: var(--mut); }
-  .cmd:hover, .cmd.is-selected { background: var(--tint); }
-  .cmd:hover .n, .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
+  .cmd.is-selected { background: var(--tint); }
+  .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
+  /* bez JS se výběr neřídí skriptem, tak ho nahradí hover; s JS hover posouvá výběr (terminal.ts) */
+  :global(html:not(.js)) .cmd:hover { background: var(--tint); }
+  :global(html:not(.js)) .cmd:hover .n { color: var(--acc-text); font-weight: 700; }
   .cmd.is-selected .mark { visibility: visible; }
   .soon { margin: 0; padding: 6px 14px 0; color: var(--dim); display: flex; }
   .pad { display: inline-block; width: 17px; }
