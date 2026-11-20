@@ -14,10 +14,13 @@ interface Props {
   alternates: Alternates;
   current?: PageKey | undefined;
   wide?: boolean;
+  /** odkaz na konci výpisu; výchozí `← /home` */
+  back?: { label: string; href: string };
 }
-const { lang, command, title, description, alternates, current, wide = false } = Astro.props;
+const { lang, command, title, description, alternates, current, wide = false, back } = Astro.props;
 const ui = t(lang);
 const home = homeUrl(lang);
+const backLink = back ?? { label: ui.back, href: home };
 ---
 <Base lang={lang} title={title} description={description} alternates={alternates} current={current}>
   <TerminalShell lang={lang} variant="page" windowTitle={`pockio — ${command}`}>
@@ -26,6 +29,6 @@ const home = homeUrl(lang);
     <div class={`out${wide ? ' wide' : ''}`} data-stream>
       <slot />
     </div>
-    <p class="back"><a href={home} data-term>{ui.back}</a></p>
+    <p class="back"><a href={backLink.href} data-term>{backLink.label}</a></p>
   </TerminalShell>
 </Base>

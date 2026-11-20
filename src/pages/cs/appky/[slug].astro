@@ -2,6 +2,7 @@
 import TerminalPage from '../../../components/TerminalPage.astro';
 import PlayButton from '../../../components/PlayButton.astro';
 import { routes } from '../../../i18n/routes';
+import { t } from '../../../i18n/ui';
 
 // DOČASNĚ: jedna ukázková appka natvrdo; ve fázi 3 z content collection `apps`
 export function getStaticPaths() {
@@ -15,6 +16,7 @@ const { slug } = Astro.params;
   title="Pockio Docházka"
   alternates={{ en: '/apps/attendance/', cs: '/cs/appky/dochazka/' }}
   wide
+  back={{ label: t('cs').backApps, href: routes.apps.cs }}
 >
   <h2>Pockio Docházka</h2>
   <p>Docházka na jedno klepnutí. <span class="dim">Android · Zdarma · Bez reklam</span></p>

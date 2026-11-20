@@ -1,32 +1,47 @@
 ---
-// Seznam appek jako příkazů (Domů). Každý řádek je obyčejný odkaz.
-import { getApps } from '../data/commands';
-import { t, type Lang } from '../i18n/ui';
-
-interface Props { lang: Lang }
-const { lang } = Astro.props;
-const ui = t(lang);
-const apps = getApps(lang);
+// Seznam příkazů (Domů, /apps). Každý řádek je obyčejný odkaz.
+// `run` = příkaz vypíše výsledek v terminálu (skript), bez JS je to obyčejný odkaz na `href`.
+export interface Item {
+  name: string;
+  description: string;
+  href: string;
+  run?: boolean;
+}
+interface Props {
+  items: Item[];
+  label: string;
+  /** tlumený neklikatelný řádek pod seznamem */
+  footer?: string | undefined;
+}
+const { items, label, footer } = Astro.props;
 ---
 <div class="select">
-  <p class="label">{ui.selectApp}</p>
+  <p class="label">{label}</p>
   <ul class="cmds" data-cmd-list>
-    {apps.map((app, i) => (
+    {items.map((item, i) => (
       <li>
-        <a class={`cmd${i === 0 ? ' is-selected' : ''}`} href={app.href} data-term data-cmd={app.slug}>
+        <a
+          class={`cmd${i === 0 ? ' is-selected' : ''}`}
+          href={item.href}
+          data-term={item.run ? undefined : ''}
+          data-run={item.run ? item.name : undefined}
+          data-cmd={item.name}
+        >
           <span class="mark" aria-hidden="true">▸</span>
-          <span class="n">/{app.slug}</span>
-          <span class="d">{app.title} · {app.description}</span>
+          <span class="n">/{item.name}</span>
+          <span class="d">{item.description}</span>
         </a>
       </li>
     ))}
   </ul>
-  <p class="soon"><span class="pad" aria-hidden="true"></span>{ui.moreSoon}</p>
+  {footer && <p class="soon"><span class="pad" aria-hidden="true"></span><span>{footer}</span></p>}
 </div>
 
 <style>
   .label { margin: 0 0 8px; color: var(--mut); }
-  .cmds { list-style: none; margin: 0; padding: 0; }
+  .cmds { list-style: none; margin: 0; padding: 0; gap: 0; }
+  .cmds li { padding: 0; }
+  .cmds li::before { content: none; }
   .cmd {
     display: flex;
     flex-wrap: wrap;
@@ -46,6 +61,9 @@ const apps = getApps(lang);
   .soon { margin: 0; padding: 6px 14px 0; color: var(--dim); display: flex; }
   .pad { display: inline-block; width: 17px; }
   @media (max-width: 640px) {
-    .n { width: 100%; }
+    .cmd { display: grid; grid-template-columns: 1.3ch 1fr; column-gap: 18px; row-gap: 0; }
+    .mark { margin-right: 0; }
+    .n { width: auto; }
+    .d { grid-column: 2; }
   }
 </style>

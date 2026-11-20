@@ -4,15 +4,15 @@
 export {};
 
 interface AppCommand { slug: string; title: string; description: string; href: string }
-type HiddenCommand = { name: string; aliases?: string[]; description: string } & (
+type Command = { name: string; aliases?: string[]; description: string; home?: boolean } & (
   | { type: 'link'; href: string }
-  | { type: 'output'; title: string; lines: string[] }
+  | { type: 'output'; title: string; lines: string[]; more?: { label: string; href: string } }
 );
 interface Data {
   lang: 'en' | 'cs';
   home: string;
   ui: { notFound: string; back: string; helpTitle: string; helpTip: string; tagline: string };
-  commands: { apps: AppCommand[]; hidden: HiddenCommand[] };
+  commands: { apps: AppCommand[]; commands: Command[] };
 }
 
 const dataEl = document.getElementById('pockio-data');
@@ -31,7 +31,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   const coarse = window.matchMedia('(pointer: coarse)');
   if (prompt) prompt.hidden = false;
 
-  const { apps, hidden } = data.commands;
+  const { apps, commands } = data.commands;
 
   // ---------- pomocné ----------
   function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: string) {
@@ -46,7 +46,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   function allNames(): string[] {
     const names = ['help'];
     for (const a of apps) names.push(a.slug);
-    for (const h of hidden) names.push(h.name, ...(h.aliases ?? []));
+    for (const c of commands) names.push(c.name, ...(c.aliases ?? []));
     return names;
   }
 
@@ -182,20 +182,23 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
       out.append(el('h2', undefined, data.ui.helpTitle));
       const dl = el('dl', 'kv');
       dl.style.gridTemplateColumns = '18ch 1fr';
-      const add = (name: string, desc: string, href?: string) => {
+      const add = (name: string, desc: string, href?: string, term = true) => {
         const dt = el('dt');
         if (href) {
           const a = el('a', undefined, `/${name}`);
           a.href = href;
-          a.dataset.term = '';
+          if (term) a.dataset.term = '';
           dt.append(a);
         } else {
           dt.textContent = `/${name}`;
         }
         dl.append(dt, el('dd', undefined, desc));
       };
+      for (const c of commands) {
+        if (c.type === 'link') add(c.name, c.description, c.href);
+        else add(c.name, c.description, c.more?.href, false); // plná stránka: obyčejné načtení
+      }
       for (const a of apps) add(a.slug, a.title, a.href);
-      for (const h of hidden) add(h.name, h.description, h.type === 'link' ? h.href : undefined);
       add('help', data.ui.helpTitle);
       out.append(dl, el('p', 'mut', data.ui.helpTip));
     });
@@ -206,10 +209,18 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     showOutput(cmd, (out) => out.append(el('p', undefined, `${data.ui.notFound} ${cmd}`)));
   }
 
-  function showHidden(h: Extract<HiddenCommand, { type: 'output' }>) {
-    showOutput(`/${h.name}`, (out) => {
-      out.append(el('h2', undefined, h.title));
-      for (const line of h.lines) out.append(el('p', undefined, line));
+  function showCommandOutput(c: Extract<Command, { type: 'output' }>) {
+    showOutput(`/${c.name}`, (out) => {
+      out.append(el('h2', undefined, c.title));
+      for (const line of c.lines) out.append(el('p', undefined, line));
+      if (c.more) {
+        // plná stránka bez terminálu: obyčejné načtení (bez data-term)
+        const p = el('p');
+        const a = el('a', undefined, c.more.label);
+        a.href = c.more.href;
+        p.append(a);
+        out.append(p);
+      }
     });
   }
 
@@ -219,17 +230,17 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     if (!name) return;
     if (input) input.value = '';
     const app = apps.find((a) => a.slug === name);
-    const hid = hidden.find((h) => h.name === name || h.aliases?.includes(name));
+    const cmd = commands.find((c) => c.name === name || c.aliases?.includes(name));
     if (name === 'help') {
       showHelp();
     } else if (app) {
       void navigate(app.href);
       return;
-    } else if (hid?.type === 'link') {
-      void navigate(hid.href);
+    } else if (cmd?.type === 'link') {
+      void navigate(cmd.href);
       return;
-    } else if (hid?.type === 'output') {
-      showHidden(hid);
+    } else if (cmd?.type === 'output') {
+      showCommandOutput(cmd);
     } else {
       showNotFound(raw);
     }
@@ -299,10 +310,22 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     return load(target.pathname + target.search, true);
   }
 
+  /** Otevře řádek seznamu: příkaz s výpisem (`data-run`) vypíše text, ostatní přejdou na stránku. */
+  function openRow(a: HTMLAnchorElement) {
+    if (a.dataset.run) runCommand(a.dataset.run);
+    else void navigate(a.href);
+  }
+
   // ---------- události ----------
   document.addEventListener('click', (e) => {
     finish();
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const run = (e.target as Element).closest<HTMLAnchorElement>('a[data-run]');
+    if (run && run.origin === location.origin) {
+      e.preventDefault();
+      openRow(run);
+      return;
+    }
     const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-term]');
     if (!a || a.origin !== location.origin) return;
     e.preventDefault();
@@ -322,7 +345,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     if (input.value.trim()) runCommand(input.value);
     else {
       const sel = rows().find((r) => r.classList.contains('is-selected') && !r.closest('li')?.hidden);
-      if (sel) void navigate(sel.href);
+      if (sel) openRow(sel);
     }
   });
 
@@ -367,7 +390,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
       const sel = rows().find((r) => r.classList.contains('is-selected') && !r.closest('li')?.hidden);
       if (sel) {
         e.preventDefault();
-        void navigate(sel.href);
+        openRow(sel);
       }
     } else if ((e.key === '/' || e.key === '?') && !isTextField(e.target) && e.target === document.body) {
       if (e.key === '?') {

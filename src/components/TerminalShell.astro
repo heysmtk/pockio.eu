@@ -178,7 +178,7 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
   }
 
   /* dotyková zařízení: jen klikatelný seznam, bez vstupu a bez klávesnice */
-  @media (pointer: coarse) {
+  @media (max-width: 640px), (pointer: coarse) {
     .prompt { display: none !important; }
   }
   @media (max-width: 640px) {

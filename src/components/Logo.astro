@@ -99,9 +99,8 @@ const Tag = href ? 'a' : 'div';
   .logo--sm .sub b { display: none; }
 
   @media (max-width: 640px) {
-    .logo--lg .word { font-size: 40px; }
-    .logo--lg .mark { width: 60px; height: 60px; }
-    .logo--md .word { font-size: 34px; }
-    .logo--md .mark { width: 52px; height: 52px; }
+    .logo--lg, .logo--md { gap: 14px; padding: 16px 18px 16px 16px; }
+    .logo--lg .word, .logo--md .word { font-size: 34px; }
+    .logo--lg .mark, .logo--md .mark { width: 46px; height: 46px; }
   }
 </style>

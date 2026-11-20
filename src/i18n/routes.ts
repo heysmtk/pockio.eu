@@ -1,10 +1,11 @@
 // URL stránek v obou jazycích na jednom místě.
 import type { Lang } from './ui';
 
-export type PageKey = 'home' | 'about' | 'contact' | 'privacy';
+export type PageKey = 'home' | 'apps' | 'about' | 'contact' | 'privacy';
 
 export const routes: Record<PageKey, Record<Lang, string>> = {
   home: { en: '/', cs: '/cs/' },
+  apps: { en: '/apps/', cs: '/cs/appky/' },
   about: { en: '/about/', cs: '/cs/o-studiu/' },
   contact: { en: '/contact/', cs: '/cs/kontakt/' },
   privacy: { en: '/privacy/', cs: '/cs/privacy/' },

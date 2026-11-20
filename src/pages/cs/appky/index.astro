@@ -1,0 +1,15 @@
+---
+import TerminalPage from '../../../components/TerminalPage.astro';
+import CommandList from '../../../components/CommandList.astro';
+import { getApps } from '../../../data/commands';
+import { alternatesFor } from '../../../i18n/routes';
+import { t } from '../../../i18n/ui';
+
+const lang = 'cs';
+const ui = t(lang);
+// DOČASNĚ natvrdo; ve fázi 3 z content collection `apps`
+const items = getApps(lang).map((a) => ({ name: a.slug, description: `${a.title} · ${a.description}`, href: a.href }));
+---
+<TerminalPage lang={lang} command="/appky" title="Appky" alternates={alternatesFor('apps')} current="apps">
+  <CommandList label={ui.selectApp} items={items} footer={ui.moreSoon} />
+</TerminalPage>
