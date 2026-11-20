@@ -41,6 +41,11 @@ const abs = (path: string) => new URL(path, Astro.site).href;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={abs('/og.png')} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pockio" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:locale" content={lang === 'cs' ? 'cs_CZ' : 'en_US'} />
   </head>
   <body>

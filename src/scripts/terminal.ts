@@ -215,6 +215,9 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   function setScreen(nodes: Node[], title: string, variant: string) {
     screen.replaceChildren(...nodes);
     titleEl.textContent = title;
+    // čtečka oznámí novou obrazovku (výpis samotný se nečte po slovech)
+    const status = document.getElementById('term-status');
+    if (status) status.textContent = title;
     stage.dataset.variant = variant;
     window.scrollTo(0, 0);
   }
