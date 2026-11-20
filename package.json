@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "new-app": "node scripts/new-app.mjs"
   },
   "dependencies": {
     "@fontsource-variable/doto": "^5.3.0",
