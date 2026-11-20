@@ -117,7 +117,8 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
 
   // ---------- výběr v seznamu ----------
   const rows = () => Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-cmd-list] a.cmd'));
-  const visibleRows = () => rows().filter((r) => !r.closest('li')?.hidden);
+  const isVisible = (r: HTMLElement) => !r.closest('[hidden]');
+  const visibleRows = () => rows().filter(isVisible);
   function select(row: HTMLAnchorElement | undefined) {
     for (const r of rows()) r.classList.toggle('is-selected', r === row);
   }
@@ -128,14 +129,77 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     const next = cur < 0 ? (delta > 0 ? 0 : vis.length - 1) : (cur + delta + vis.length) % vis.length;
     select(vis[next]);
   }
+  // Hledání přes všechny příkazy (viditelné, skryté i appky), ať jsi na jakékoli stránce.
+  interface Found { name: string; description: string; href?: string; run?: boolean }
+  function searchAll(q: string): Found[] {
+    const seen = new Set<string>();
+    const all: (Found & { names: string[] })[] = [
+      { name: 'help', names: ['help'], description: data.ui.helpTitle, run: true },
+      ...commands.map((c) => ({
+        name: c.name,
+        names: [c.name, ...(c.aliases ?? [])],
+        description: c.description,
+        ...(c.type === 'link' ? { href: c.href } : { run: true }),
+      })),
+      ...apps.map((a) => ({ name: a.slug, names: [a.slug], description: `${a.title} · ${a.description}`, href: a.href })),
+    ];
+    const hits = all.filter((f) => {
+      if (seen.has(f.name)) return false;
+      const ok = !q || f.names.some((n) => n.startsWith(q));
+      if (ok) seen.add(f.name);
+      return ok;
+    });
+    // přesná shoda první
+    hits.sort((x, y) => Number(y.names.includes(q)) - Number(x.names.includes(q)));
+    return hits;
+  }
+
+  let results: HTMLElement | null = null;
+
+  function renderResults(found: Found[]) {
+    const box = el('div', 'select');
+    box.dataset.results = '';
+    if (!found.length) {
+      box.append(el('p', 'label', `${data.ui.notFound} /${nameOf(input?.value ?? '')}`));
+    } else {
+      const ul = el('ul', 'cmds');
+      ul.dataset.cmdList = '';
+      for (const f of found) {
+        const li = el('li');
+        const a = el('a', 'cmd');
+        a.href = f.href ?? '#';
+        if (f.run) a.dataset.run = f.name;
+        else a.dataset.term = '';
+        a.dataset.cmd = f.name;
+        const mark = el('span', 'mark', '▸');
+        mark.setAttribute('aria-hidden', 'true');
+        a.append(mark, el('span', 'n', `/${f.name}`), el('span', 'd', f.description));
+        li.append(a);
+        ul.append(li);
+      }
+      box.append(ul);
+    }
+    return box;
+  }
+
   function applyFilter() {
-    const q = input ? nameOf(input.value) : '';
     const typing = !!input && input.value.trim().startsWith('/');
-    for (const r of rows()) {
-      const li = r.closest('li');
-      if (li) li.hidden = typing && !(r.dataset.cmd ?? '').startsWith(q);
+    results?.remove();
+    results = null;
+    screen.querySelectorAll<HTMLElement>('.select:not([data-results])').forEach((s) => (s.hidden = typing));
+    if (typing) {
+      results = renderResults(searchAll(input ? nameOf(input.value) : ''));
+      const back = screen.querySelector('.back');
+      if (back) back.before(results);
+      else screen.append(results);
     }
     select(visibleRows()[0]);
+  }
+
+  /** Otevře řádek seznamu: příkaz s výpisem (`data-run`) ho spustí, ostatní přejdou na stránku. */
+  function openRow(a: HTMLAnchorElement) {
+    if (a.dataset.run) runCommand(a.dataset.run);
+    else void navigate(a.href);
   }
 
   // ---------- zobrazení obrazovky ----------
@@ -304,6 +368,12 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   document.addEventListener('click', (e) => {
     finish();
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const run = (e.target as Element).closest<HTMLAnchorElement>('a[data-run]');
+    if (run) {
+      e.preventDefault();
+      openRow(run);
+      return;
+    }
     const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-term]');
     if (!a || a.origin !== location.origin) return;
     e.preventDefault();
@@ -326,10 +396,13 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   input?.closest('form')?.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!input) return;
-    if (input.value.trim()) runCommand(input.value);
+    const typed = input.value.trim();
+    const hit = typed.startsWith('/') ? visibleRows().find((r) => r.classList.contains('is-selected')) : undefined;
+    if (hit) openRow(hit);
+    else if (typed) runCommand(input.value);
     else {
-      const sel = rows().find((r) => r.classList.contains('is-selected') && !r.closest('li')?.hidden);
-      if (sel) void navigate(sel.href);
+      const sel = rows().find((r) => r.classList.contains('is-selected') && isVisible(r));
+      if (sel) openRow(sel);
     }
   });
 
@@ -371,10 +444,10 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
       move(e.key === 'ArrowDown' ? 1 : -1);
       e.preventDefault();
     } else if (e.key === 'Enter' && e.target === document.body) {
-      const sel = rows().find((r) => r.classList.contains('is-selected') && !r.closest('li')?.hidden);
+      const sel = rows().find((r) => r.classList.contains('is-selected') && isVisible(r));
       if (sel) {
         e.preventDefault();
-        void navigate(sel.href);
+        openRow(sel);
       }
     } else if ((e.key === '/' || e.key === '?') && !isTextField(e.target) && e.target === document.body) {
       if (e.key === '?') {
