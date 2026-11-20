@@ -1,0 +1,23 @@
+---
+// Zástupné tlačítko Google Play (v ostré verzi oficiální odznak „Get it on Google Play").
+interface Props { href: string; label: string }
+const { href, label } = Astro.props;
+---
+<a class="play" href={href} rel="noopener">
+  <span aria-hidden="true">▶</span> {label} <span aria-hidden="true">↗</span>
+</a>
+
+<style>
+  .play {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--acc);
+    border-radius: 8px;
+    color: var(--acc-text);
+    text-decoration: none;
+  }
+  .play:hover { background: var(--tint); }
+</style>
