@@ -61,3 +61,28 @@
   .out .kv { grid-template-columns: 1fr; gap: 0; }
   .out .kv dd { margin-bottom: 6px; }
 }
+
+/* echo příkazu a odkaz zpět */
+.echo { margin: 0; color: var(--mut); font-family: var(--mono); }
+.echo b { color: var(--acc); font-weight: 400; }
+.echo em { color: var(--fg); font-style: normal; }
+.back { margin: 0; font-family: var(--mono); }
+.back a { color: var(--acc-text); text-decoration: underline; text-underline-offset: 3px; }
+.back a:hover { color: var(--fg); }
+
+/* plynulé vypisování: třídy přidává až skript, bez JS se nic neskrývá */
+.sw { opacity: 0; transition: opacity 0.3s ease; }
+.sw.on { opacity: 1; }
+.fade { opacity: 0; transition: opacity 0.5s ease; }
+.fade.on { opacity: 1; }
+.tc {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 2px;
+  background: var(--acc);
+  vertical-align: text-bottom;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sw, .fade { opacity: 1; transition: none; }
+}
