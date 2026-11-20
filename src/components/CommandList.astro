@@ -1,0 +1,51 @@
+---
+// Seznam appek jako příkazů (Domů). Každý řádek je obyčejný odkaz.
+import { getApps } from '../data/commands';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const apps = getApps(lang);
+---
+<div class="select">
+  <p class="label">{ui.selectApp}</p>
+  <ul class="cmds" data-cmd-list>
+    {apps.map((app, i) => (
+      <li>
+        <a class={`cmd${i === 0 ? ' is-selected' : ''}`} href={app.href} data-term data-cmd={app.slug}>
+          <span class="mark" aria-hidden="true">▸</span>
+          <span class="n">/{app.slug}</span>
+          <span class="d">{app.title} · {app.description}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="soon"><span class="pad" aria-hidden="true"></span>{ui.moreSoon}</p>
+</div>
+
+<style>
+  .label { margin: 0 0 8px; color: var(--mut); }
+  .cmds { list-style: none; margin: 0; padding: 0; }
+  .cmd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 24px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .mark { visibility: hidden; width: 1.3ch; margin-right: -12px; color: var(--acc-text); }
+  .n { width: 150px; font-weight: 500; }
+  .d { color: var(--mut); }
+  .cmd:hover, .cmd.is-selected { background: var(--tint); }
+  .cmd:hover .n, .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
+  .cmd.is-selected .mark { visibility: visible; }
+  .soon { margin: 0; padding: 6px 14px 0; color: var(--dim); display: flex; }
+  .pad { display: inline-block; width: calc(1.3ch + 12px); }
+  @media (max-width: 640px) {
+    .n { width: 100%; }
+  }
+</style>

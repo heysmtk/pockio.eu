@@ -1,0 +1,85 @@
+---
+// Přepínač jazyka: <details>, otevírá se nahoru, English první.
+// Funguje bez JS; skript jen zavře nabídku při kliknutí mimo nebo Esc.
+import { langs, t, type Lang } from '../i18n/ui';
+import type { Alternates } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  alternates: Alternates;
+}
+const { lang, alternates } = Astro.props;
+const ui = t(lang);
+---
+<details class="lang" data-lang-menu>
+  <summary aria-label={ui.langMenuLabel}>
+    <span>{ui.langShort}</span>
+    <svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </summary>
+  <ul>
+    {langs.map((l) => (
+      <li>
+        <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{t(l).langName}</a>
+      </li>
+    ))}
+  </ul>
+</details>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-lang-menu]');
+  if (menu) {
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .lang {
+    position: relative;
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+  summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--fg);
+    cursor: pointer;
+    user-select: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--hover); }
+  ul {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    min-width: 130px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  a {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: var(--mut);
+    text-decoration: none;
+  }
+  a:hover { background: var(--hover); color: var(--fg); }
+  a[aria-current] { color: var(--acc-text); font-weight: 700; }
+</style>

@@ -1,0 +1,47 @@
+---
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import { langs, t, type Lang } from '../i18n/ui';
+import type { Alternates, PageKey } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  title?: string | undefined; // bez názvu webu; domů má jen „Pockio"
+  description?: string | undefined;
+  alternates: Alternates;
+  current?: PageKey | undefined;
+}
+const { lang, title, description, alternates, current } = Astro.props;
+const ui = t(lang);
+const fullTitle = title ? `${title} · Pockio` : ui.siteTitle;
+const desc = description ?? ui.description;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const abs = (path: string) => new URL(path, Astro.site).href;
+---
+<!doctype html>
+<html lang={ui.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical.href} />
+    {langs.map((l) => <link rel="alternate" hreflang={l} href={abs(alternates[l])} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(alternates.en)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0D0B07" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pockio" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content={lang === 'cs' ? 'cs_CZ' : 'en_US'} />
+  </head>
+  <body>
+    <slot />
+    <Footer lang={lang} alternates={alternates} current={current} />
+  </body>
+</html>

@@ -1,0 +1,71 @@
+---
+import { t, type Lang } from '../i18n/ui';
+import { routes, type Alternates, type PageKey } from '../i18n/routes';
+import LangMenu from './LangMenu.astro';
+
+interface Props {
+  lang: Lang;
+  alternates: Alternates;
+  current?: PageKey | undefined;
+}
+const { lang, alternates, current } = Astro.props;
+const ui = t(lang);
+const items = [
+  { key: 'about', label: ui.footer.about, term: true },
+  { key: 'contact', label: ui.footer.contact, term: true },
+  { key: 'privacy', label: ui.footer.privacy, term: false },
+] as const;
+---
+<footer class="footer">
+  <div class="container inner">
+    <div class="left">
+      <LangMenu lang={lang} alternates={alternates} />
+      <nav aria-label={ui.footerNavLabel}>
+        {items.map((i) => (
+          <a
+            href={routes[i.key][lang]}
+            data-term={i.term ? '' : undefined}
+            data-footer={i.key}
+            aria-current={current === i.key ? 'page' : undefined}
+          >{i.label}</a>
+        ))}
+      </nav>
+    </div>
+    <p class="copy">{ui.copyright}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: auto;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--mut);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 38px var(--inset) 38px;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  nav {
+    display: flex;
+    gap: 20px;
+    font-family: var(--mono);
+  }
+  nav a {
+    color: var(--mut);
+    text-decoration: none;
+  }
+  nav a:hover { color: var(--acc-text); }
+  nav a[aria-current] { color: var(--acc-text); }
+  .copy { margin: 0; }
+</style>

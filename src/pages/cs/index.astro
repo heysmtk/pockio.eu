@@ -1,14 +1,16 @@
 ---
-// Dočasná kostra (CS, /cs/). Ve fázi 2 ji nahradí terminál.
+import Base from '../../layouts/Base.astro';
+import TerminalShell from '../../components/TerminalShell.astro';
+import Logo from '../../components/Logo.astro';
+import CommandList from '../../components/CommandList.astro';
+import { alternatesFor } from '../../i18n/routes';
+import { t } from '../../i18n/ui';
+
+const lang = 'cs';
 ---
-<html lang="cs">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Pockio</title>
-  </head>
-  <body>
-    <h1>Pockio</h1>
-    <p>Kapesní pomocníci.</p>
-  </body>
-</html>
+<Base lang={lang} alternates={alternatesFor('home')} current="home">
+  <TerminalShell lang={lang} variant="home" windowTitle="pockio — zsh">
+    <Logo size="lg" tagline={t(lang).tagline} />
+    <CommandList lang={lang} />
+  </TerminalShell>
+</Base>

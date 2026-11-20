@@ -1,0 +1,63 @@
+/* Styl výpisu příkazu v terminálu (globální, aby šel použít i na renderovaný Markdown). */
+.out {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 72ch;
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 400;
+  color: var(--fg);
+}
+.out.wide { max-width: none; }
+.out h1,
+.out h2 {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+.out h3 {
+  margin: 6px 0 0;
+  font-size: 16.5px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+.out p { margin: 0; }
+.out strong { font-weight: 800; }
+.out .mut, .out p.mut { color: var(--mut); }
+.out .dim { color: var(--dim); }
+.out ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.out li { padding-left: 2ch; position: relative; }
+.out li::before {
+  content: '-';
+  position: absolute;
+  left: 0;
+  color: var(--acc);
+}
+.out a {
+  color: var(--acc-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.out a:hover { color: var(--fg); }
+.out .kv {
+  display: grid;
+  grid-template-columns: 14ch 1fr;
+  gap: 2px 16px;
+  margin: 0;
+}
+.out .kv dt { color: var(--mut); }
+.out .kv dd { margin: 0; }
+@media (max-width: 640px) {
+  .out .kv { grid-template-columns: 1fr; gap: 0; }
+  .out .kv dd { margin-bottom: 6px; }
+}
