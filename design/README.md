@@ -1,6 +1,6 @@
 # design/
 
-Screenshoty schváleného návrhu (plátno „Pockio.eu – website"), vždy EN a CS, jen tmavé téma. Desktop 1280 px (`*-en.png`, `*-cs.png`), telefon 390 px (`*-telefon.png`).
+Screenshoty schváleného návrhu (plátno „Pockio.eu – website"), vždy EN a CS, jen tmavé téma. Desktop (okno prohlížeče 1280 px, terminál 760 px) (`*-en.png`, `*-cs.png`), telefon 390 px (`*-telefon.png`).
 
 | Soubor | Co ukazuje |
 |---|---|
@@ -9,7 +9,7 @@ Screenshoty schváleného návrhu (plátno „Pockio.eu – website"), vždy EN 
 | `03-o-studiu-*` | O studiu jako výpis `/about` |
 | `04-detail-appky-*` | Detail appky jako výpis `/attendance` (zpět `← /apps`) |
 | `05-kontakt-*` | Kontakt jako výpis `/contact` |
-| `06-privacy-*` | Privacy: samostatná textová stránka bez terminálu. Příkaz `/privacy` v terminálu vypíše krátké shrnutí s odkazem na ni (tento výpis v designu zatím není) |
+| `06-privacy-*` | Privacy: samostatná textová stránka bez terminálu (`/privacy` na ni jen odkazuje) |
 | `terminal-demo-vypisovani.html` | Klikací ukázka vypisování po slovech (starší, appky ještě přímo na Domů; chování výpisu platí). |
 
 Poznámky:
