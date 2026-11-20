@@ -13,6 +13,3 @@ dist/
 npm-debug.log*
 .DS_Store
 
-# local-only docs (nepatří do veřejného repa)
-CLAUDE.md
-pockio-mvp-plan.md
