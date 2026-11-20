@@ -1,19 +1,4 @@
 ---
-import TerminalPage from '../../../components/TerminalPage.astro';
-import { alternatesFor } from '../../../i18n/routes';
-// DOČASNÝ zástupný text; ve fázi 3 z .md, před spuštěním zkontrolovat
+import ContentPage from '../../../components/ContentPage.astro';
 ---
-<TerminalPage lang="cs" command="/soukromi" title="Zásady ochrany soukromí" alternates={alternatesFor('privacy')} current="privacy">
-  <h2>Zásady ochrany soukromí</h2>
-  <p class="dim">Poslední aktualizace: [DATUM]</p>
-  <h3>Stručně</h3>
-  <p>Web Pockio nepoužívá cookies, trackery ani analytiku. Neptá se tě na žádné osobní údaje.</p>
-  <h3>Co vidí server</h3>
-  <p>Web je hostovaný jako statické soubory. Jako každý webový server si hosting může uchovávat technické logy (například tvoji IP adresu a čas požadavku) kvůli bezpečnosti a provozu. Nemám k nim přístup způsobem, který by tě identifikoval, a nepoužívám je.</p>
-  <h3>E-mail</h3>
-  <p>Když mi napíšeš, dostanu tvoji e-mailovou adresu a zprávu. Používám je jen k odpovědi a s nikým je nesdílím.</p>
-  <h3>Appky</h3>
-  <p>Každá appka má vlastní zásady ochrany soukromí, odkaz je na její stránce. Tato stránka se týká jen webu.</p>
-  <h3>Změny</h3>
-  <p>Když se zásady změní, nová verze se tady objeví s novým datem.</p>
-</TerminalPage>
+<ContentPage lang="cs" page="privacy" />

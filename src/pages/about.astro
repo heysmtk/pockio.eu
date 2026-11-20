@@ -1,21 +1,4 @@
 ---
-import TerminalPage from '../components/TerminalPage.astro';
-import { alternatesFor, routes } from '../i18n/routes';
-// DOČASNÝ zástupný text; ve fázi 3 ho nahradí obsah z .md
+import ContentPage from '../components/ContentPage.astro';
 ---
-<TerminalPage lang="en" command="/about" title="About" alternates={alternatesFor('about')} current="about">
-  <h2>Pockio is made by one person, in the evenings</h2>
-  <p>I’m Tomáš. Pockio is my small studio for pocket-sized mobile utilities. I run it in the evenings, next to work and family, which is why the apps are small, simple and well thought out.</p>
-  <h3>Why my own studio</h3>
-  <p>I’ve always wanted to make my own apps. Pockio is how I turn ideas for things that would be handy in your pocket into real apps.</p>
-  <h3>Where the name comes from</h3>
-  <p><strong>pocket + studio = Pockio</strong>. A studio of small things you always have at hand.</p>
-  <h3>How the apps are made</h3>
-  <ul>
-    <li>An idea from everyday life.</li>
-    <li>One feature. An app does one thing.</li>
-    <li>A test on my own phone first.</li>
-    <li>Google Play. I release it and improve it based on feedback.</li>
-  </ul>
-  <p>Questions? Go to <a href={routes.contact.en} data-term>/contact</a>.</p>
-</TerminalPage>
+<ContentPage lang="en" page="about" />

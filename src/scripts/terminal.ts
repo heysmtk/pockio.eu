@@ -379,7 +379,9 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
       openRow(run);
       return;
     }
-    const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-term]');
+    // odkazy v Markdownu nemají `data-term`, všechny interní odkazy ve výpisu jsou stránky terminálu
+    const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-term], .out a');
+    if (a?.getAttribute('href')?.startsWith('mailto:')) return;
     if (!a || a.origin !== location.origin) return;
     e.preventDefault();
     void navigate(a.href);
