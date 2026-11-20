@@ -111,6 +111,7 @@
 .cmd .mark { visibility: hidden; width: 1.3ch; margin-right: -18px; color: var(--acc-text); }
 .cmd .n { width: 132px; font-weight: 500; }
 .cmd .d { color: var(--mut); }
+.cmd .ico { width: 20px; height: 20px; margin-right: 10px; border-radius: 5px; vertical-align: -5px; }
 .cmd.is-selected { background: var(--tint); }
 .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
 /* bez JS se výběr neřídí skriptem, tak ho nahradí hover; s JS hover posouvá výběr (terminal.ts) */

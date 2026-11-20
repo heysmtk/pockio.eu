@@ -5,6 +5,7 @@
 // Appky (příkaz `/slug`) se berou z content collection `apps` a vypisují se v `/apps`.
 import { appUrl, routes } from '../i18n/routes';
 import type { Lang } from '../i18n/ui';
+import { getImage } from 'astro:assets';
 import { getReleasedApps } from './apps';
 
 export interface AppCommand {
@@ -12,6 +13,8 @@ export interface AppCommand {
   title: string;
   description: string;
   href: string;
+  /** adresa ikony appky (malá, 2×) */
+  icon: string;
 }
 
 export type Command = {
@@ -58,12 +61,15 @@ const commands: Record<Lang, Command[]> = {
 
 export async function getApps(lang: Lang): Promise<AppCommand[]> {
   const entries = await getReleasedApps(lang);
-  return entries.map((e) => ({
-    slug: e.data.slug,
-    title: e.data.title,
-    description: e.data.tagline.replace(/\.$/, ''),
-    href: appUrl(lang, e.data.slug),
-  }));
+  return Promise.all(
+    entries.map(async (e) => ({
+      slug: e.data.slug,
+      title: e.data.title,
+      description: e.data.tagline.replace(/\.$/, ''),
+      href: appUrl(lang, e.data.slug),
+      icon: (await getImage({ src: e.data.icon, width: 40, height: 40, format: 'webp' })).src,
+    })),
+  );
 }
 
 export function getCommands(lang: Lang): Command[] {

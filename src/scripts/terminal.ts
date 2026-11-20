@@ -3,7 +3,7 @@
 // klávesnice, filtr příkazů, navigace bez načítání (History API) a plynulé vypisování.
 export {};
 
-interface AppCommand { slug: string; title: string; description: string; href: string }
+interface AppCommand { slug: string; title: string; description: string; href: string; icon: string }
 type Command = { name: string; aliases?: string[]; description: string; home?: boolean } & (
   | { type: 'link'; href: string }
   | { type: 'output'; title: string; lines: string[] }
@@ -130,7 +130,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     select(vis[next]);
   }
   // Hledání přes všechny příkazy (viditelné, skryté i appky), ať jsi na jakékoli stránce.
-  interface Found { name: string; description: string; href?: string; run?: boolean }
+  interface Found { name: string; description: string; href?: string; run?: boolean; icon?: string }
   function searchAll(q: string): Found[] {
     const seen = new Set<string>();
     const all: (Found & { names: string[] })[] = [
@@ -141,7 +141,7 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
         description: c.description,
         ...(c.type === 'link' ? { href: c.href } : { run: true }),
       })),
-      ...apps.map((a) => ({ name: a.slug, names: [a.slug], description: `${a.title} · ${a.description}`, href: a.href })),
+      ...apps.map((a) => ({ name: a.slug, names: [a.slug], description: `${a.title} · ${a.description}`, href: a.href, icon: a.icon })),
     ];
     const hits = all.filter((f) => {
       if (seen.has(f.name)) return false;
@@ -173,7 +173,16 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
         a.dataset.cmd = f.name;
         const mark = el('span', 'mark', '▸');
         mark.setAttribute('aria-hidden', 'true');
-        a.append(mark, el('span', 'n', `/${f.name}`), el('span', 'd', f.description));
+        const d = el('span', 'd');
+        if (f.icon) {
+          const img = el('img', 'ico');
+          img.src = f.icon;
+          img.alt = '';
+          img.width = img.height = 20;
+          d.append(img);
+        }
+        d.append(f.description);
+        a.append(mark, el('span', 'n', `/${f.name}`), d);
         li.append(a);
         ul.append(li);
       }

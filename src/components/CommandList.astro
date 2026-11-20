@@ -4,6 +4,7 @@ export interface Item {
   name: string;
   description: string;
   href: string;
+  icon?: string;
 }
 interface Props {
   items: Item[];
@@ -26,7 +27,7 @@ const { items, label, footer } = Astro.props;
         >
           <span class="mark" aria-hidden="true">▸</span>
           <span class="n">/{item.name}</span>
-          <span class="d">{item.description}</span>
+          <span class="d">{item.icon && <img class="ico" src={item.icon} alt="" width="20" height="20" />}{item.description}</span>
         </a>
       </li>
     ))}
