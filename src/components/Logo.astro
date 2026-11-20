@@ -71,20 +71,16 @@ const Tag = href ? 'a' : 'div';
     font-weight: 400;
   }
 
-  .logo--lg {
-    gap: 20px;
-    padding: 24px 28px 24px 24px;
-    border-radius: 12px;
-  }
-  .logo--lg .mark { width: 56px; height: 56px; }
-  .logo--lg .word { font-size: 42px; }
-
+  /* lg (Domů) a md (výpisy) mají stejnou velikost, ať logo při procházení neposkakuje */
+  .logo--lg,
   .logo--md {
     gap: 18px;
     padding: 18px 26px 18px 20px;
     border-radius: 12px;
   }
+  .logo--lg .mark,
   .logo--md .mark { width: 48px; height: 48px; }
+  .logo--lg .word,
   .logo--md .word { font-size: 34px; }
 
   .logo--sm {
