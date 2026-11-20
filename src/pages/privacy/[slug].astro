@@ -1,0 +1,10 @@
+---
+import AppPrivacyPage from '../../components/AppPrivacyPage.astro';
+import { getReleasedApps } from '../../data/apps';
+
+export async function getStaticPaths() {
+  return (await getReleasedApps('en')).map((entry) => ({ params: { slug: entry.data.slug } }));
+}
+const { slug } = Astro.params;
+---
+<AppPrivacyPage lang="en" slug={slug!} />

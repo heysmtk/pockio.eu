@@ -1,46 +1,10 @@
 ---
-import TerminalPage from '../../components/TerminalPage.astro';
-import PlayButton from '../../components/PlayButton.astro';
-import { routes } from '../../i18n/routes';
-import { t } from '../../i18n/ui';
+import AppPage from '../../components/AppPage.astro';
+import { getReleasedApps } from '../../data/apps';
 
-// DOČASNĚ: jedna ukázková appka natvrdo; ve fázi 3 z content collection `apps`
-export function getStaticPaths() {
-  return [{ params: { slug: 'attendance' } }];
+export async function getStaticPaths() {
+  return (await getReleasedApps('en')).map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
 }
-const { slug } = Astro.params;
+const { entry } = Astro.props;
 ---
-<TerminalPage
-  lang="en"
-  command={`/${slug}`}
-  title="Pockio Attendance"
-  alternates={{ en: '/apps/attendance/', cs: '/cs/appky/dochazka/' }}
-  wide
-  parents={[{ label: 'apps', href: routes.apps.en }]}
-  back={{ label: t('en').backApps, href: routes.apps.en }}
->
-  <h2>Pockio Attendance</h2>
-  <p>Attendance in one tap. <span class="dim">Android · Free · No ads</span></p>
-  <PlayButton href="https://play.google.com/" label="Get it on Google Play" />
-  <h3>About the app</h3>
-  <p>Log your arrival and departure with a single tap, no spreadsheets, no paper. The app remembers your days, adds up the hours and gives you a summary at the end of the month.</p>
-  <h3>What it does</h3>
-  <ul>
-    <li>Clock in and out with one tap</li>
-    <li>Weekly and monthly hour overview</li>
-    <li>Overtime and breaks calculated for you</li>
-    <li>CSV export, everything stays on your phone</li>
-  </ul>
-  <h3>Information</h3>
-  <dl class="kv">
-    <dt>Version</dt><dd>1.0.0</dd>
-    <dt>Size</dt><dd>[SIZE]</dd>
-    <dt>Updated</dt><dd>[DATE]</dd>
-    <dt>Requires</dt><dd>Android 8.0+</dd>
-    <dt>Price</dt><dd>Free, optional Pro</dd>
-    <dt>Developer</dt><dd>Pockio</dd>
-  </dl>
-  <h3>What’s new</h3>
-  <p>First version: clock in and out, weekly and monthly overview, CSV export.</p>
-  <p>Privacy policy: <a href={routes.privacy.en} data-term>Read it →</a></p>
-</TerminalPage>
+<AppPage lang="en" entry={entry} />

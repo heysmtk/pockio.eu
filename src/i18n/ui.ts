@@ -28,6 +28,18 @@ export const ui = {
     helpTitle: 'Commands',
     helpTip: 'Tip: ↑ ↓ to move, Enter to open, Tab to complete.',
     privacyTitle: 'Privacy policy',
+    app: {
+      playLabel: 'Get it on Google Play',
+      screenshots: 'Screenshots',
+      about: 'About the app',
+      features: 'What it does',
+      information: 'Information',
+      whatsNew: 'What’s new',
+      privacy: 'Privacy policy:',
+      readIt: 'Read it →',
+      developer: 'Developer',
+      detail: { version: 'Version', size: 'Size', updated: 'Updated', requires: 'Requires', price: 'Price' },
+    },
   },
   cs: {
     htmlLang: 'cs',
@@ -53,6 +65,18 @@ export const ui = {
     helpTitle: 'Příkazy',
     helpTip: 'Tip: ↑ ↓ pohyb, Enter otevře, Tab doplní.',
     privacyTitle: 'Zásady ochrany soukromí',
+    app: {
+      playLabel: 'Stáhnout z Google Play',
+      screenshots: 'Screenshoty',
+      about: 'O appce',
+      features: 'Co umí',
+      information: 'Informace',
+      whatsNew: 'Co je nového',
+      privacy: 'Zásady ochrany soukromí:',
+      readIt: 'Přečíst →',
+      developer: 'Vývojář',
+      detail: { version: 'Verze', size: 'Velikost', updated: 'Aktualizováno', requires: 'Vyžaduje', price: 'Cena' },
+    },
   },
 } as const;
 

@@ -2,9 +2,10 @@
 // - `home: true` = příkaz je vidět na Domů (v tomto pořadí),
 // - ostatní jsou skryté (jdou napsat, `/help` je vypíše),
 // - `type: 'link'` přejde na stránku, `type: 'output'` vypíše text v terminálu.
-// Appky (příkaz `/slug`) se vypisují v `/apps`; ve fázi 3 je nahradí content collection `apps`.
-import { routes } from '../i18n/routes';
+// Appky (příkaz `/slug`) se berou z content collection `apps` a vypisují se v `/apps`.
+import { appUrl, routes } from '../i18n/routes';
 import type { Lang } from '../i18n/ui';
+import { getReleasedApps } from './apps';
 
 export interface AppCommand {
   slug: string; // příkaz je `/slug`
@@ -22,26 +23,6 @@ export type Command = {
   | { type: 'link'; href: string }
   | { type: 'output'; title: string; lines: string[] }
 );
-
-// DOČASNĚ: ve fázi 3 nahradí content collection `apps`.
-const apps: Record<Lang, AppCommand[]> = {
-  en: [
-    {
-      slug: 'attendance',
-      title: 'Pockio Attendance',
-      description: 'attendance in one tap',
-      href: '/apps/attendance/',
-    },
-  ],
-  cs: [
-    {
-      slug: 'dochazka',
-      title: 'Pockio Docházka',
-      description: 'docházka na jedno klepnutí',
-      href: '/cs/appky/dochazka/',
-    },
-  ],
-};
 
 const commands: Record<Lang, Command[]> = {
   en: [
@@ -75,8 +56,14 @@ const commands: Record<Lang, Command[]> = {
   ],
 };
 
-export function getApps(lang: Lang): AppCommand[] {
-  return apps[lang];
+export async function getApps(lang: Lang): Promise<AppCommand[]> {
+  const entries = await getReleasedApps(lang);
+  return entries.map((e) => ({
+    slug: e.data.slug,
+    title: e.data.title,
+    description: e.data.tagline.replace(/\.$/, ''),
+    href: appUrl(lang, e.data.slug),
+  }));
 }
 
 export function getCommands(lang: Lang): Command[] {
@@ -89,6 +76,6 @@ export function getHomeCommands(lang: Lang): Command[] {
 }
 
 /** Data pro skript terminálu (vloží se do stránky jako JSON). */
-export function commandsForScript(lang: Lang) {
-  return { apps: apps[lang], commands: commands[lang] };
+export async function commandsForScript(lang: Lang) {
+  return { apps: await getApps(lang), commands: commands[lang] };
 }

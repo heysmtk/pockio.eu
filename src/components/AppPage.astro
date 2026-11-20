@@ -1,0 +1,66 @@
+---
+// Detail appky jako výpis v terminálu. Všechna data jsou z frontmatteru a těla .md (kolekce `apps`).
+import { render } from 'astro:content';
+import TerminalPage from './TerminalPage.astro';
+import PlayButton from './PlayButton.astro';
+import PhoneFrame from './PhoneFrame.astro';
+import { getAppAlternates, appKey, type AppEntry } from '../data/apps';
+import { appPrivacyUrl, routes } from '../i18n/routes';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; entry: AppEntry }
+const { lang, entry } = Astro.props;
+const ui = t(lang);
+const d = entry.data;
+const { Content } = await render(entry);
+const alternates = await getAppAlternates(appKey(entry));
+const apps = routes.apps[lang];
+const rows = [
+  [ui.app.detail.version, d.details.version],
+  [ui.app.detail.size, d.details.size],
+  [ui.app.detail.updated, d.details.updated],
+  [ui.app.detail.requires, d.details.requires],
+  [ui.app.detail.price, d.details.price],
+  [ui.app.developer, 'Pockio'],
+] as const;
+---
+<TerminalPage
+  lang={lang}
+  command={`/${d.slug}`}
+  title={d.title}
+  description={d.tagline}
+  alternates={alternates}
+  parents={[{ label: apps.replace(/^\/(cs\/)?|\/$/g, ''), href: apps }]}
+  back={{ label: ui.backApps, href: apps }}
+  wide
+>
+  <h2>{d.title}</h2>
+  <p>{d.tagline} <span class="dim">{d.chips.join(' · ')}</span></p>
+  <PlayButton href={d.playUrl} label={ui.app.playLabel} />
+  {d.screenshots.length > 0 && (
+    <>
+      <h3>{ui.app.screenshots}</h3>
+      <div class="shots" data-stream-block>
+        {d.screenshots.map((s) => <PhoneFrame src={s.file} caption={s.caption} />)}
+      </div>
+    </>
+  )}
+  <h3>{ui.app.about}</h3>
+  <div class="prose"><Content /></div>
+  <h3>{ui.app.features}</h3>
+  <ul>{d.features.map((f) => <li>{f}</li>)}</ul>
+  <h3>{ui.app.information}</h3>
+  <dl class="kv">{rows.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>
+  <h3>{ui.app.whatsNew}</h3>
+  <p>{d.whatsNew}</p>
+  <p>{ui.app.privacy} <a href={appPrivacyUrl(lang, d.slug)} data-term>{ui.app.readIt}</a></p>
+</TerminalPage>
+
+<style>
+  .shots { display: flex; flex-wrap: wrap; gap: 16px; }
+  .prose { display: flex; flex-direction: column; gap: 14px; }
+  .prose :global(p) { margin: 0; }
+  @media (max-width: 640px) {
+    .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; max-width: 320px; }
+  }
+</style>

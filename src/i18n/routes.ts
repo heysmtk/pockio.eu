@@ -11,6 +11,11 @@ export const routes: Record<PageKey, Record<Lang, string>> = {
   privacy: { en: '/privacy/', cs: '/cs/privacy/' },
 };
 
+/** URL detailu appky v daném jazyce (slug je v každém jazyce jiný). */
+export const appUrl = (lang: Lang, slug: string) => (lang === 'en' ? `/apps/${slug}/` : `/cs/appky/${slug}/`);
+/** URL privacy policy appky. */
+export const appPrivacyUrl = (lang: Lang, slug: string) => (lang === 'en' ? `/privacy/${slug}/` : `/cs/privacy/${slug}/`);
+
 export type Alternates = Record<Lang, string>;
 
 export function alternatesFor(key: PageKey): Alternates {

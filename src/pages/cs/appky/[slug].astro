@@ -1,46 +1,10 @@
 ---
-import TerminalPage from '../../../components/TerminalPage.astro';
-import PlayButton from '../../../components/PlayButton.astro';
-import { routes } from '../../../i18n/routes';
-import { t } from '../../../i18n/ui';
+import AppPage from '../../../components/AppPage.astro';
+import { getReleasedApps } from '../../../data/apps';
 
-// DOČASNĚ: jedna ukázková appka natvrdo; ve fázi 3 z content collection `apps`
-export function getStaticPaths() {
-  return [{ params: { slug: 'dochazka' } }];
+export async function getStaticPaths() {
+  return (await getReleasedApps('cs')).map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
 }
-const { slug } = Astro.params;
+const { entry } = Astro.props;
 ---
-<TerminalPage
-  lang="cs"
-  command={`/${slug}`}
-  title="Pockio Docházka"
-  alternates={{ en: '/apps/attendance/', cs: '/cs/appky/dochazka/' }}
-  wide
-  parents={[{ label: 'appky', href: routes.apps.cs }]}
-  back={{ label: t('cs').backApps, href: routes.apps.cs }}
->
-  <h2>Pockio Docházka</h2>
-  <p>Docházka na jedno klepnutí. <span class="dim">Android · Zdarma · Bez reklam</span></p>
-  <PlayButton href="https://play.google.com/" label="Stáhnout z Google Play" />
-  <h3>O appce</h3>
-  <p>Příchod a odchod zapíšeš jedním klepnutím, bez tabulek a papírů. Appka si pamatuje tvoje dny, sečte hodiny a na konci měsíce ti ukáže přehled.</p>
-  <h3>Co umí</h3>
-  <ul>
-    <li>Příchod a odchod na jedno klepnutí</li>
-    <li>Týdenní a měsíční přehled hodin</li>
-    <li>Přesčasy a pauzy počítá sama</li>
-    <li>Export do CSV, všechno zůstává v telefonu</li>
-  </ul>
-  <h3>Informace</h3>
-  <dl class="kv">
-    <dt>Verze</dt><dd>1.0.0</dd>
-    <dt>Velikost</dt><dd>[VELIKOST]</dd>
-    <dt>Aktualizace</dt><dd>[DATUM]</dd>
-    <dt>Požadavky</dt><dd>Android 8.0+</dd>
-    <dt>Cena</dt><dd>Zdarma, volitelné Pro</dd>
-    <dt>Vývojář</dt><dd>Pockio</dd>
-  </dl>
-  <h3>Co je nového</h3>
-  <p>První verze: příchody, odchody, týdenní a měsíční přehled, export do CSV.</p>
-  <p>Zásady ochrany soukromí: <a href={routes.privacy.cs} data-term>Přečíst →</a></p>
-</TerminalPage>
+<AppPage lang="cs" entry={entry} />

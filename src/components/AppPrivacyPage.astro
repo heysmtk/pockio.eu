@@ -1,0 +1,36 @@
+---
+// Privacy policy appky (kolekce `appPrivacy`) jako výpis v terminálu.
+import { getCollection, render } from 'astro:content';
+import TerminalPage from './TerminalPage.astro';
+import { getReleasedApps } from '../data/apps';
+import { appPrivacyUrl, appUrl, routes } from '../i18n/routes';
+import type { Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; slug: string }
+const { lang, slug } = Astro.props;
+const app = (await getReleasedApps(lang)).find((a) => a.data.slug === slug);
+if (!app) throw new Error(`Appka ${slug} (${lang}) neexistuje`);
+const key = app.id.split('/')[0]!;
+const entry = (await getCollection('appPrivacy')).find((e) => e.id === `${key}/privacy.${lang}`);
+if (!entry) throw new Error(`Chybí src/content/apps/${key}/privacy.${lang}.md`);
+const other = lang === 'en' ? 'cs' : 'en';
+const otherApp = (await getReleasedApps(other)).find((a) => a.id.startsWith(`${key}/`));
+if (!otherApp) throw new Error(`Appka ${key} nemá ${other}.md`);
+const alternates = {
+  [lang]: appPrivacyUrl(lang, slug),
+  [other]: appPrivacyUrl(other, otherApp.data.slug),
+} as Record<Lang, string>;
+const { Content } = await render(entry);
+---
+<TerminalPage
+  lang={lang}
+  command={`/${slug}`}
+  title={entry.data.title}
+  description={entry.data.description}
+  alternates={alternates}
+  current="privacy"
+  parents={[{ label: routes.privacy[lang].replace(/^\/(cs\/)?|\/$/g, ''), href: routes.privacy[lang] }]}
+  back={{ label: `← /${slug}`, href: appUrl(lang, slug) }}
+>
+  <Content />
+</TerminalPage>

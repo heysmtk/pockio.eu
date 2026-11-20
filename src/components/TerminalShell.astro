@@ -22,7 +22,7 @@ const data = {
     helpTip: ui.helpTip,
     tagline: ui.tagline,
   },
-  commands: commandsForScript(lang),
+  commands: await commandsForScript(lang),
 };
 // `<` escapujeme, aby text v JSONu nikdy neukončil <script>
 const json = JSON.stringify(data).replace(/</g, '\\u003c');
