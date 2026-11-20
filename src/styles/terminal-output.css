@@ -69,6 +69,8 @@
 .echo { margin: 0; color: var(--mut); font-family: var(--mono); }
 .echo b { color: var(--acc); font-weight: 400; }
 .echo em { color: var(--fg); font-style: normal; }
+.echo a { color: var(--acc-text); text-decoration: underline; text-underline-offset: 3px; }
+.echo a:hover { color: var(--fg); }
 .back { margin: 0; font-family: var(--mono); }
 .back a { color: var(--acc-text); text-decoration: underline; text-underline-offset: 3px; }
 .back a:hover { color: var(--fg); }
@@ -91,10 +93,10 @@
 }
 
 /* seznam příkazů (Domů, /apps, výsledky hledání) */
-.label { margin: 0 0 8px; color: var(--mut); }
+.select .label { margin: 0 0 8px; color: var(--mut); }
 .cmds { list-style: none; margin: 0; padding: 0; gap: 0; }
 .cmds li { padding: 0; }
-.cmd {
+.select a.cmd {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -104,20 +106,22 @@
   color: var(--fg);
   text-decoration: none;
 }
-.mark { visibility: hidden; width: 1.3ch; margin-right: -18px; color: var(--acc-text); }
-.n { width: 132px; font-weight: 500; }
-.d { color: var(--mut); }
+/* `.out a` (odkazy ve výpisu) je jinak silnější a podtrhl by řádky */
+.select a.cmd:hover { color: var(--fg); }
+.cmd .mark { visibility: hidden; width: 1.3ch; margin-right: -18px; color: var(--acc-text); }
+.cmd .n { width: 132px; font-weight: 500; }
+.cmd .d { color: var(--mut); }
 .cmd.is-selected { background: var(--tint); }
 .cmd.is-selected .n { color: var(--acc-text); font-weight: 700; }
 /* bez JS se výběr neřídí skriptem, tak ho nahradí hover; s JS hover posouvá výběr (terminal.ts) */
 html:not(.js) .cmd:hover { background: var(--tint); }
 html:not(.js) .cmd:hover .n { color: var(--acc-text); font-weight: 700; }
 .cmd.is-selected .mark { visibility: visible; }
-.soon { margin: 0; padding: 6px 14px 0; color: var(--dim); display: flex; }
-.pad { display: inline-block; width: 17px; }
+.select .soon { margin: 0; padding: 6px 14px 0; color: var(--dim); display: flex; }
+.select .pad { display: inline-block; width: 17px; }
 @media (max-width: 640px) {
-  .cmd { display: grid; grid-template-columns: 1.3ch 1fr; column-gap: 18px; row-gap: 0; }
-  .mark { margin-right: 0; }
-  .n { width: auto; }
-  .d { grid-column: 2; }
+  .select a.cmd { display: grid; grid-template-columns: 1.3ch 1fr; column-gap: 18px; row-gap: 0; }
+  .cmd .mark { margin-right: 0; }
+  .cmd .n { width: auto; }
+  .cmd .d { grid-column: 2; }
 }

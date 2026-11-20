@@ -14,10 +14,12 @@ interface Props {
   alternates: Alternates;
   current?: PageKey | undefined;
   wide?: boolean;
+  /** nadřazené stránky v cestě `> /home/<parent>/příkaz` (klikatelné) */
+  parents?: { label: string; href: string }[];
   /** odkaz na konci výpisu; výchozí `← /home` */
   back?: { label: string; href: string };
 }
-const { lang, command, title, description, alternates, current, wide = false, back } = Astro.props;
+const { lang, command, title, description, alternates, current, wide = false, back, parents = [] } = Astro.props;
 const ui = t(lang);
 const home = homeUrl(lang);
 const backLink = back ?? { label: ui.back, href: home };
@@ -25,7 +27,7 @@ const backLink = back ?? { label: ui.back, href: home };
 <Base lang={lang} title={title} description={description} alternates={alternates} current={current}>
   <TerminalShell lang={lang} variant="page" windowTitle={`pockio — ${command}`}>
     <Logo size="md" href={home} tagline={ui.tagline} term />
-    <p class="echo"><b>&gt;</b> <em>{command}</em></p>
+    <p class="echo"><b>&gt;</b> <em>/<a href={home} data-term>home</a>{parents.map((p) => <Fragment>/<a href={p.href} data-term>{p.label}</a></Fragment>)}{command}</em></p>
     <div class={`out${wide ? ' wide' : ''}`} data-stream>
       <slot />
     </div>

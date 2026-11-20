@@ -229,7 +229,12 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
     const logo = makeLogo();
     const echo = el('p', 'echo');
     const b = el('b', undefined, '>');
-    echo.append(b, ' ', el('em', undefined, command));
+    const em = el('em', undefined, '/');
+    const home = el('a', undefined, 'home');
+    home.href = data.home;
+    home.dataset.term = '';
+    em.append(home, command);
+    echo.append(b, ' ', em);
     const out = el('div', 'out');
     out.dataset.stream = '';
     build(out);

@@ -16,6 +16,7 @@ const { slug } = Astro.params;
   title="Pockio Docházka"
   alternates={{ en: '/apps/attendance/', cs: '/cs/appky/dochazka/' }}
   wide
+  parents={[{ label: 'appky', href: routes.apps.cs }]}
   back={{ label: t('cs').backApps, href: routes.apps.cs }}
 >
   <h2>Pockio Docházka</h2>
