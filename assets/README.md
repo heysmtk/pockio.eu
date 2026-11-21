@@ -1,6 +1,6 @@
-# Favicon Pockio
+# Favicon Pockio (okrové "p" na tmavé dlaždici #1F1A10)
 
-Vše patří do `public/` (kořen webu). Zdroj je `favicon.svg` (tečka v "p" a tlustší tah, aby se "p" četlo i v 16 px).
+Vše patří do `public/` (kořen webu). Zdroj je `favicon.svg`.
 
 Do `<head>` v `Base.astro`:
 
@@ -27,4 +27,4 @@ Do `<head>` v `Base.astro`:
 }
 ```
 
-Poznámky: `apple-touch-icon.png` a `icon-maskable-512.png` jsou čtverec bez zaoblení (iOS/Android si zaoblí sami). Ikona pro Google Play (512 px) se dělá zvlášť.
+Poznámky: `apple-touch-icon.png` a `icon-maskable-512.png` jsou čtverec bez zaoblení (iOS/Android si zaoblí sami). `play-store-icon-512.png` je návrh ikony pro Google Play (čtverec, Google si zaoblí sám).
