@@ -256,11 +256,11 @@ Orientační čas při práci po večerech: cca 1–2 týdny.
 - [ ] i18n routování (EN na `/`, CS pod `/cs/`)
 
 **Fáze 2 – Design do kódu**
-- [ ] `tokens.css` (barvy, radiusy, stíny a záře)
-- [ ] Lokální fonty Nunito + JetBrains Mono (Doto jen pro screenshoty appek, nebo vynechat; latin + latin-ext), kontrola češtiny a ASCII loga
-- [ ] Komponenty: Logo, TerminalShell, Footer (jazyk + odkazy), LangMenu, PhoneFrame, PlayButton
-- [ ] Skript terminálu: šipky, Enter, Tab, Esc, výpis skrytých příkazů, navigace bez načítání (výměna obsahu + History API, tlačítko zpět v prohlížeči funguje), na dotykových zařízeních bez vstupního řádku
-- [ ] Layout `Base.astro` (meta, hreflang, favicon)
+- [x] `tokens.css` (barvy, radiusy, stíny a záře)
+- [x] Lokální fonty Nunito + JetBrains Mono (Doto jen pro screenshoty appek, nebo vynechat; latin + latin-ext), kontrola češtiny a ASCII loga
+- [x] Komponenty: Logo, TerminalShell, Footer (jazyk + odkazy), LangMenu, PhoneFrame, PlayButton
+- [x] Skript terminálu: šipky, Enter, Tab, Esc, výpis skrytých příkazů, navigace bez načítání (výměna obsahu + History API, tlačítko zpět v prohlížeči funguje), na dotykových zařízeních bez vstupního řádku
+- [x] Layout `Base.astro` (meta, hreflang, favicon)
 
 **Fáze 3 – Obsah, stránky a šablony**
 - [x] Content collections + schémata (`apps`, `appPrivacy`, `pages`)
@@ -272,7 +272,7 @@ Orientační čas při práci po večerech: cca 1–2 týdny.
 - [x] Responzivita (telefon, tablet, desktop); screenshoty na telefonu ve dvou sloupcích, žádný horizontální scroll; logo se na úzkém displeji nesmí zvětšit přes okno
 - [x] Přístupnost (kontrasty, focus, klávesnice, `alt` texty; terminál: výběr nespoléhá jen na barvu, výstup příkazů v `aria-live`, bez klávesové pasti); tlumený slogan zkontrolovat na kontrast
 - [x] Respektovat `prefers-reduced-motion` (hover animace, blikající kurzor)
-- [ ] Lighthouse (cíl ≥ 95)
+- [x] Lighthouse (cíl ≥ 95): 21. 11. 2026 nad buildem, mobil i desktop; Domů, O studiu, Appky, CS Domů, CS O studiu: Performance 98–100, Přístupnost / Best Practices / SEO 100
 - [x] `sitemap.xml`, `robots.txt`, Open Graph obrázek, favicon sada (PNG ikona 512×512 pro Google Play zvlášť)
 
 **Fáze 5 – Nasazení**
