@@ -11,7 +11,7 @@ const lang = 'cs';
 ---
 <Base lang={lang} alternates={alternatesFor('home')} current="home">
   <TerminalShell lang={lang} variant="home" windowTitle="pockio — zsh">
-    <Logo size="lg" tagline={t(lang).tagline} />
+    <Logo tagline={t(lang).tagline} />
     <CommandList label={t(lang).selectCommand} items={getHomeCommands(lang).map((c) => ({ name: c.name, description: c.description, href: c.type === 'link' ? c.href : '' }))} />
   </TerminalShell>
 </Base>

@@ -26,7 +26,7 @@ const backLink = back ?? { label: ui.back, href: home };
 ---
 <Base lang={lang} title={title} description={description} alternates={alternates} current={current}>
   <TerminalShell lang={lang} variant="page" windowTitle={`pockio — ${command}`}>
-    <Logo size="md" href={home} tagline={ui.tagline} term />
+    <Logo href={home} tagline={ui.tagline} term />
     <p class="echo"><b>&gt;</b> <em>/<a href={home} data-term>home</a>{parents.map((p) => <Fragment>/<a href={p.href} data-term>{p.label}</a></Fragment>)}{command}</em></p>
     <div class={`out${wide ? ' wide' : ''}`} data-stream>
       <slot />

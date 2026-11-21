@@ -225,14 +225,14 @@ function init(data: Data, screen: HTMLElement, titleEl: HTMLElement, stage: HTML
   function makeLogo(): HTMLElement | null {
     const old = screen.querySelector<HTMLElement>('.logo');
     if (!old) return null;
-    const a = el('a', 'logo logo--md logo--framed');
+    const a = el('a', 'logo');
     for (const attr of Array.from(old.attributes)) {
       if (attr.name.startsWith('data-astro-cid')) a.setAttribute(attr.name, attr.value);
     }
     a.setAttribute('href', data.home);
-    a.setAttribute('aria-label', 'Pockio');
+    a.setAttribute('aria-label', 'pockio');
     a.dataset.term = '';
-    a.innerHTML = old.innerHTML;
+    for (const part of Array.from(old.querySelectorAll('pre, .sub'))) a.append(part.cloneNode(true));
     return a;
   }
 
