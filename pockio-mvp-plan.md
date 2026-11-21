@@ -1,6 +1,6 @@
 # Pockio.eu – web: MVP, tech stack a postup do spuštění
 
-Stav: plán schválen 4. 11. 2026, přepsáno 20. 11. 2026 (web je terminál: všechny stránky se vypisují v něm; ovládání a skryté příkazy) podle finálního designu ( jen tmavé téma, Nunito + dot-matrix Doto jen na logu, okrový akcent, stránky O studiu / Kontakt / Detail appky, šablony pro další appky).
+Stav: plán schválen 4. 11. 2026, přepsáno 20. 11. 2026 (web je terminál: všechny stránky se vypisují v něm; ovládání a skryté příkazy) podle finálního designu ( jen tmavé téma, Nunito + JetBrains Mono, ASCII logo, okrový akcent, stránky O studiu / Kontakt / Detail appky, šablony pro další appky).
 Návrh designu: plátno „Pockio.eu – website" (24 artboardů: Domů, Appky, O studiu, Detail appky, Kontakt, Soukromí; EN + CS, každé jako web 1280 px i telefon 390 px; jen tmavá varianta).
 
 ---
@@ -13,9 +13,9 @@ Lehký, rychlý a minimalistický web pro mini studio Pockio. Hlavní stránka j
 
 **Je v MVP**
 
-- **Domů** (`/`): uprostřed stránky **terminál** (okno „pockio — zsh", šířka 760 px). Uvnitř rámeček s logem (dlaždice + `pockio` v Doto + podtitul „Pocket-sized helpers · pockio.eu"), řádek „Select a command:" a **čtyři příkazy**: `/apps` (our pocket-sized apps), `/about` (about the studio), `/privacy` (privacy policy), `/contact` (get in touch); česky `/appky`, `/o-studiu`, `/soukromi`, `/kontakt`. Každý řádek je odkaz, první je vybraný okrou. Dole **funkční vstupní řádek** `> ▮ type / for commands…` s blikajícím kurzorem a nápověda „? help · tab complete". Na Domů nejsou appky přímo (jsou v `/apps`) a není tam přepínač jazyka. Na pozadí jen jemné hvězdy, bez plovoucích ikonek a bez záře kolem okna.
+- **Domů** (`/`): uprostřed stránky **terminál** (okno „pockio — zsh", šířka 760 px). Uvnitř ASCII logo `pockio` s podtitulem „✻ Pocket-sized helpers · pockio.eu", řádek „Select a command:" a **čtyři příkazy**: `/apps` (our pocket-sized apps), `/about` (about the studio), `/privacy` (privacy policy), `/contact` (get in touch); česky `/appky`, `/o-studiu`, `/soukromi`, `/kontakt`. Každý řádek je odkaz, první je vybraný okrou. Dole **funkční vstupní řádek** `> ▮ type / for commands…` s blikajícím kurzorem a nápověda „? help · tab complete". Na Domů nejsou appky přímo (jsou v `/apps`) a není tam přepínač jazyka. Na pozadí jen jemné hvězdy, bez plovoucích ikonek a bez záře kolem okna.
 - **Plynulé vypisování (jako v AI chatu):** po spuštění příkazu se výpis objevuje postupně po slovech (fade-in, cca 3 slova za 35 ms, celá stránka appky do pár sekund), screenshoty se prolnou jako celek. Na konci právě vypsaného textu je okrový blokový kurzor, který se posouvá s výpisem a po dokončení zmizí (zůstane jen ve vstupním řádku); je `aria-hidden`. Kliknutí nebo klávesa výpis dokončí hned. Při `prefers-reduced-motion` a při přímém otevření URL (odkaz, vyhledávač) se zobrazí vše okamžitě. HTML je vždy kompletní, animace je jen vrstva přes něj, takže nic neutrpí SEO, čtečky ani web bez JS.
-- **Web je jeden terminál.** Stránky Appky, O studiu, Kontakt a Detail appky se **vypisují uvnitř terminálu** jako výstup příkazu (`/apps`, `/about`, `/contact`, `/attendance`). Okno má pořád 760 px na šířku, **výška se podle obsahu protáhne dolů** (stránka se posouvá, ne okno uvnitř). Po spuštění příkazu se obrazovka **vyčistí**: nahoře zůstane malé logo, pod ním echo příkazu `> /about`, pak výpis a na konci odkaz **`← /home`** (zpět). Starší příkazy se nezobrazují jako historie.
+- **Web je jeden terminál.** Stránky Appky, O studiu, Kontakt a Detail appky se **vypisují uvnitř terminálu** jako výstup příkazu (`/apps`, `/about`, `/contact`, `/attendance`). Okno má pořád 760 px na šířku, **výška se podle obsahu protáhne dolů** (stránka se posouvá, ne okno uvnitř). Po spuštění příkazu se obrazovka **vyčistí**: nahoře zůstane ASCII logo (odkaz na Domů), pod ním echo příkazu `> /about`, pak výpis a na konci odkaz **`← /home`** (zpět). Starší příkazy se nezobrazují jako historie.
 - **Terminál: ovládání a příkazy** (platí na všech stránkách, tedy i na privacy):
   - **Myš a dotyk:** každý příkaz v seznamu je obyčejný odkaz, klik nebo klepnutí otevře stránku appky. Funguje i bez JavaScriptu.
   - **Klávesnice (desktop):** šipky ↑/↓ posouvají výběr (okrový řádek), **Enter** otevře vybranou položku, psaní `/…` filtruje příkazy a **Tab** doplní (např. `/att` → `/attendance`), **Esc** smaže vstup. Při načtení je vybraná první appka.
@@ -34,7 +34,7 @@ Lehký, rychlý a minimalistický web pro mini studio Pockio. Hlavní stránka j
 - **Navigace:** hlavní navigace je terminál. Patička má jazykové menu a odkazy `about`, `contact` a `privacy` (česky `o studiu`, `kontakt`, `soukromí`; malými písmeny, bez lomítka, mono písmo). Aktuální stránka je okrově. Samostatná hlavička s odkazy neexistuje; na stránce privacy je jen kompaktní logo.
 - Pouze **tmavé téma** (světlá varianta je zrušená).
 - Favicon sada (z ikony loga), základní SEO (title, description, Open Graph, sitemap, `hreflang` CS/EN).
-- **Telefon:** vstupní řádek a nápověda se schovají (`(max-width:640px), (pointer:coarse)`), jen klikatelné řádky. Logo se zmenší (znak 46 px, `pockio` 34 px) a vejde se do okna, tabulka „Informace" jde pod sebe, screenshoty ve dvou sloupcích. V designu je k tomu 6 telefonních boardů (390 px) na jazyk.
+- **Telefon:** vstupní řádek a nápověda se schovají (`(max-width:640px), (pointer:coarse)`), jen klikatelné řádky. ASCII logo se zmenší na 13 px (desktop 14 px) a vejde se do okna, tabulka „Informace" jde pod sebe, screenshoty ve dvou sloupcích. V designu je k tomu 6 telefonních boardů (390 px) na jazyk.
 - Responzivní, přístupné (kontrasty, focus, klávesnice), **bez cookies a trackerů**.
 
 **Není v MVP (později)**
@@ -51,11 +51,13 @@ Zdroj pravdy je plátno „Pockio.eu – website". Hlavní rysy:
 
 - **Atmosféra:** téměř černé teplé pozadí s jemnými hvězdami. Záře (glow) jen kolem loga a tlačítek, ne kolem terminálu.
 - **Jednotná šířka:** terminál, patička i hlavička privacy stránky sedí na jednom kontejneru **760 px** (okraj 24 px), takže levý a pravý okraj jsou všude stejné. Text privacy stránky má max. 720 px, zarovnaný vlevo uvnitř tohoto kontejneru.
-- **Logo:** okrová zaoblená dlaždice s „p" a tečkou + nápis **`pockio` malým písmem v dot-matrix písmu Doto** (tloušťka 800, prostrkání .08em, záře). V terminálu na Domů i na výpisech stejně velké (dlaždice 48 px, nápis 34 px) v rámečku s okrovým okrajem a zaobleným rohem 12 px.
-- **Logo na výpisech:** nad echem příkazu je rámeček s logem (dlaždice 48 px, `pockio` v Doto 34 px, podtitul); je to odkaz na Domů.
-- **Terminál:** okno s tmavším pozadím `#0A0907`, tenký okraj, radius 14 px, horní lišta se třemi tečkami a titulkem „pockio — zsh". Písmo JetBrains Mono 13,5 px, výběr řádku tónem `#2B2416` a okrovým textem, hover na řádku totéž. Kurzor bliká CSS animací, při `prefers-reduced-motion` stojí. Vybraný řádek má vždy i nebarevné označení (▸), ne jen barvu.
+- **Logo (ASCII art):** `pockio` malými písmeny, JetBrains Mono, okrová `#D9A441`, bez orámování, zarovnané vlevo; pod ním podtitul `✻ Pocket-sized helpers · pockio.eu` (✻ okrově, text tlumeně). Jen běžné ASCII znaky (figlet font „standard", 6 řádků, 31 sloupců), takže vždy sedí v podmnožině latin. Bez blokových znaků (█ ╗ ═): v JetBrains Mono latin nejsou a vykreslují se s mezerami. Vykresluje se jako `<pre aria-hidden="true">` s `white-space:pre`, `line-height:1.2`, bez letter-spacing; obalový `<h1 aria-label="pockio">` má `font-weight:400`, jinak se logo zbytečně ztučňuje. Velikost 14 px na desktopu, 13 px na telefonu. Dlaždice s „p" a font Doto se z webu odstraňují; dlaždice zůstává jako favicon a ikona.
+- **Otevřené: šířka terminálu.** Zvažuje se zúžení z 760 na cca 640 px, aby víc připomínal okno terminálu; zatím platí 760 px.
+- **Logo na výpisech:** stejné ASCII logo nad echem příkazu; je to odkaz na Domů.
+- Poznámka: blokové ASCII logo (█) by vyžadovalo podmnožinu se symboly nebo SVG.
+- **Terminál:** okno s tmavším pozadím `#0A0907`, tenký okraj, radius 14 px, horní lišta se třemi tečkami a titulkem „pockio — zsh". Písmo JetBrains Mono (velikosti viz „Výpisy v terminálu"), výběr řádku tónem `#2B2416` a okrovým textem, hover na řádku totéž. Kurzor bliká CSS animací, při `prefers-reduced-motion` stojí. Vybraný řádek má vždy i nebarevné označení (▸), ne jen barvu.
 - **Slogan:** malý, tlumená barva `#7F785F`; v terminálu je součástí podtitulu loga.
-- **Výpisy v terminálu:** JetBrains Mono. Nadpis výpisu 17 px tučně, podnadpisy 15 px tučně, běžný text 13,5 px normální (na telefonu 19 / 16,5 / 15 px, aby se dobře četlo), řádek max. cca 72 znaků (screenshoty a tabulky mohou být širší), řádkování 1,7. Seznamy s okrovou pomlčkou, informace jako dvousloupcová tabulka. **Privacy stránka:** Nunito, nadpisy tučně. Dot-matrix je jen logo.
+- **Výpisy v terminálu:** JetBrains Mono. Nadpis výpisu 14 px tučně, podnadpisy 13 px tučně, běžný text 12 px normální, příkazy a drobné řádky 11 px (na telefonu text 13 px, nadpisy 15,5 a 14 px, drobné 12 px). Realizace: CSS proměnné `--tf`, `--ts`, `--t2`, `--t3`, `--al`, na telefonu přepsané v media query. Řádek max. cca 72 znaků (screenshoty a tabulky mohou být širší), řádkování 1,7. Seznamy s okrovou pomlčkou, informace jako dvousloupcová tabulka. **Privacy stránka:** Nunito, nadpisy tučně. Doto se na webu nepoužívá.
 - **Screenshoty v terminálu:** rámečky telefonů (216×440 px) zmenšené na 50 % (na telefonu 70 %), okrové světélko, popisek pod každým; číslice na „displeji" v ukázkových screenshotech jsou v Doto.
 - **Terminálové prvky:** tlačítko Google Play je obrysové s okrovým textem (v ostré verzi oficiální odznak podle pravidel Google), odkazy jsou okrově podtržené.
 
@@ -84,10 +86,11 @@ Zaoblení: karty 16 px, panely 20 px, tlačítka a štítky pilulka (9999 px), a
 | Použití | Písmo |
 |---|---|
 | Běžný text, nadpisy, popisky, tlačítka | **Nunito** (variabilní; nadpisy tloušťka 800) |
-| Logo `pockio` (a displej v ukázkových screenshotech) | **Doto** (dot-matrix, variabilní, tloušťka 800) |
+| Logo `pockio` (ASCII art) | **JetBrains Mono** (okrová, 14 px / na telefonu 13 px) |
+| Displej v ukázkových screenshotech appek | **Doto** (dot-matrix, jen tam; lze vynechat) |
 | Terminál na Domů, odkazy v patičce | **JetBrains Mono** (variabilní, monospace) |
 
-Doto se hodí jen na logo, v malé velikosti se špatně čte. Fonty lokálně přes `@fontsource-variable/nunito`, `@fontsource-variable/doto` a `@fontsource-variable/jetbrains-mono`, podmnožiny **latin + latin-ext** (nutné pro češtinu). Bez Google Fonts, bez GDPR starostí.
+Doto se na webu nepoužívá (jen číslice na displeji v screenshotech, jinak se vynechá). Fonty lokálně přes `@fontsource-variable/nunito`, `@fontsource-variable/jetbrains-mono` (a případně `@fontsource-variable/doto`), podmnožiny **latin + latin-ext** (nutné pro češtinu). Bez Google Fonts, bez GDPR starostí.
 
 ## 4. Tech stack
 
@@ -254,7 +257,7 @@ Orientační čas při práci po večerech: cca 1–2 týdny.
 
 **Fáze 2 – Design do kódu**
 - [ ] `tokens.css` (barvy, radiusy, stíny a záře)
-- [ ] Lokální fonty Nunito + Doto + JetBrains Mono (latin + latin-ext), kontrola češtiny
+- [ ] Lokální fonty Nunito + JetBrains Mono (Doto jen pro screenshoty appek, nebo vynechat; latin + latin-ext), kontrola češtiny a ASCII loga
 - [ ] Komponenty: Logo, TerminalShell, Footer (jazyk + odkazy), LangMenu, PhoneFrame, PlayButton
 - [ ] Skript terminálu: šipky, Enter, Tab, Esc, výpis skrytých příkazů, navigace bez načítání (výměna obsahu + History API, tlačítko zpět v prohlížeči funguje), na dotykových zařízeních bez vstupního řádku
 - [ ] Layout `Base.astro` (meta, hreflang, favicon)
@@ -333,7 +336,7 @@ Vždy ručně: koupě domény, DNS, OAuth souhlasy, hesla, 2FA.
 5. **Design system „Pockio"** v artefaktech má pořád staré indigo tokeny. Přepsat na novou paletu a fonty?
 6. **Hosting:** zůstat na GitHub Pages (doporučeno), nebo časem vlastní levný server?
 
-Uzavřeno: jen tmavé téma (světlá varianta zrušena), barva okra, mint a DM Mono / IBM Plex Mono zamítnuty, Doto jen na logo (nadpisy Nunito), web jako terminál (760 px, bez záře; stránky se vypisují v něm, obrazovka se při příkazu vyčistí, na konci výpisu `← /home`; na Domů čtyři příkazy `/apps`, `/about`, `/privacy`, `/contact` (appky v `/apps`), ovládání myší i klávesnicí, skryté příkazy později, `/help` je vypíše, kontakt jen e-mail; screenshoty appek v terminálu jako náhledy; privacy policy jako výpis v terminálu s vlastní URL a odkazem v patičce), EN jako výchozí jazyk, samostatná hlavička s odkazy zrušena, odkazy O studiu / Kontakt / Privacy a přepínač jazyka jen v patičce, plovoucí ikonky a wireframe pozadí zrušeny.
+Uzavřeno: jen tmavé téma (světlá varianta zrušena), barva okra, mint a DM Mono / IBM Plex Mono zamítnuty, Doto z webu pryč (logo je ASCII art v JetBrains Mono; nadpisy Nunito), web jako terminál (760 px, bez záře; stránky se vypisují v něm, obrazovka se při příkazu vyčistí, na konci výpisu `← /home`; na Domů čtyři příkazy `/apps`, `/about`, `/privacy`, `/contact` (appky v `/apps`), ovládání myší i klávesnicí, skryté příkazy později, `/help` je vypíše, kontakt jen e-mail; screenshoty appek v terminálu jako náhledy; privacy policy jako výpis v terminálu s vlastní URL a odkazem v patičce), EN jako výchozí jazyk, samostatná hlavička s odkazy zrušena, odkazy O studiu / Kontakt / Privacy a přepínač jazyka jen v patičce, plovoucí ikonky a wireframe pozadí zrušeny.
 
 ## 10. Bezpečnost a pravidla
 
@@ -347,7 +350,7 @@ Uzavřeno: jen tmavé téma (světlá varianta zrušena), barva okra, mint a DM 
 ## 11. Definice „hotovo" pro MVP
 
 - Web běží na `https://pockio.eu` v EN (výchozí) i CS
-- Vypadá podle návrhu (tmavé téma, terminál na Domů, Nunito + Doto na logu, okra), čeština se zobrazuje správně
+- Vypadá podle návrhu (tmavé téma, terminál na Domů, Nunito + JetBrains Mono, ASCII logo, okra), čeština se zobrazuje správně
 - Nová appka se přidá příkazem `npm run new-app`, vyplněním `.md` a pushem
 - Každá appka má vlastní stránku a privacy policy na vlastní URL
 - Příkaz `/contact` a odkaz v patičce vedou na funkční kontakt (e-mail)

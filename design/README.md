@@ -13,8 +13,9 @@ Screenshoty schváleného návrhu (plátno „Pockio.eu – website"), vždy EN 
 | `terminal-demo-vypisovani.html` | Klikací ukázka vypisování po slovech (starší, appky ještě přímo na Domů; chování výpisu platí). |
 
 Poznámky:
-- Na telefonu nejde psát: vstupní řádek a nápověda se schovají, jen klikání. Logo se zmenší, screenshoty appky jsou ve 2 sloupcích bez horizontálního scrollu.
+- Na telefonu nejde psát: vstupní řádek a nápověda se schovají, jen klikání. ASCII logo je na telefonu 13 px, screenshoty appky jsou ve 2 sloupcích bez horizontálního scrollu.
 - Výpisy jsou ve finálním stavu (po dokončení vypisování).
 - Texty v `[…]` jsou zástupné (e-mail, odkaz na Google Play, velikost, datum). Screenshoty appky jsou nakreslené ukázky.
 - Tlačítko Google Play je zástupné, v ostré verzi oficiální odznak podle pravidel Google.
-- Logo: `../logo/pockio-logo-dark.svg`.
+- Logo na webu je ASCII art (JetBrains Mono, okrová, 14 px / na telefonu 13 px); dlaždice `../logo/pockio-logo-dark.svg` zůstává jen jako favicon a ikona.
+- Screeny aktualizovány: ASCII logo, menší písmo výpisů (12 px; nadpis 14 px).
